@@ -210,7 +210,7 @@ colnames(tidyData) <- colNames
 # Save the delivery product in two versions for user convenince
 
 # can be read back in using the read.table function of the r utils package.
-write.table(tidyData, file = "tidyData.txt", quote = FALSE)
+write.table(tidyData, file = "tidyData.txt", row.names = FALSE)
 
 # can be read back in using the load function of the r base package.
 save(tidyData, file = "tidyData.rda")
