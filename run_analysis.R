@@ -144,7 +144,17 @@ xTest[, subject := subjectTest$subject][, activity := yTest$activities]
 xTrain[, subject := subjectTrain$subject][, activity := yTrain$activities]
 unifiedData <- rbind2(xTest, xTrain)
 
-##############   Part 5 - Reshape calculate averages   ###############
+############   Part 5 - Reshape and Calculate averages   #############
+
+# Many of the data columns are not required for the final product.  Those
+# that are required are extracted and the resulting temporary "requiredData" 
+# data.table can be reordered to place the future table keys first for easier 
+# reading.
+
+requiredColumns <- grep("[Mm]ean|std|subject|activity"
+    , colnames(unifiedData))
+requiredData <- unifiedData[, requiredColumns, with = FALSE]
+requiredData <- requiredData %>%  select(activity, subject, everything())
 
 # The requested end product is an independent tidy data set with the average 
 # of each mean and standard deviation variable for each activity and 
@@ -157,16 +167,6 @@ tidyData <- dcast.data.table(requiredData2, activity + subject ~ variable
 
 
 #############   Part 6 - Expand and Tidy Column Names   ##############
-
-# Many of the data columns are not required for the final product.  Those
-# that are required are extracted and the resulting temporary "requiredData" 
-# data.table can be reordered to place the future table keys first for easier 
-# reading.
-
-requiredColumns <- grep("[Mm]ean|std|subject|activity"
-                        , colnames(unifiedData))
-requiredData <- unifiedData[, requiredColumns, with = FALSE]
-requiredData <- requiredData %>%  select(activity, subject, everything())
 
 # The "features" of the original data are highly untidy and programmer
 # unfriendly.  The following loop cleans them up, resulting in very
