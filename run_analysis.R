@@ -9,13 +9,13 @@
 ######################################################################
 
 ## 1. Check to make sure the necessary libraries are available and loaded.
-## 2. Get and read data for Exploratory Data Analysis Course Project 2. 
+## 2. Get and read data for Getting and Cleaning Data Course Project. 
 ## 3. Clean up the data.
 ## 4. Merge the data sets and extract as a subset only those columns
 ##    that contain the means and standard deviations for each measurement.
-## 5. Create a "Tidy Data" dataset with avg. of each 
-##    each mean and standard variation variable, for each activity, 
-##    for each participant/observational subject.
+## 5. Create a "Tidy Data" dataset with avg. of each mean and standard 
+##    variation variable, for each activity, for each participant/
+##    observational subject.
 ## 6. Clean up column names to be descriptive of their contents.
 ## 7. Save two formats of tidyData table
 
@@ -130,7 +130,7 @@ yTrain$activities <-  activities$activityName[match(yTrain$activityCodes
 yTrain[, activityCodes := NULL]
 
 # Column number labels are not tidy, replace them with names.
-# Names at this point are useful right now for auditability of data, 
+# Names at this point are only useful right now for auditability of data, 
 # but not for the desired tidydata end product.  
 
 colnames(xTest) <- features$featureName
@@ -152,7 +152,7 @@ unifiedData <- rbind2(xTest, xTrain)
 # reading.
 
 requiredColumns <- grep("[Mm]ean|std|subject|activity"
-    , colnames(unifiedData))
+                        , colnames(unifiedData))
 requiredData <- unifiedData[, requiredColumns, with = FALSE]
 requiredData <- requiredData %>%  select(activity, subject, everything())
 
@@ -209,8 +209,10 @@ colnames(tidyData) <- colNames
 
 # Save the delivery product in two versions for user convenince
 
-# can be read back in using the read.table function of the r utils package.
-write.table(tidyData, file = "tidyData.txt", row.names = FALSE)
+# can be read back in using the read.table function of the r utils 
+# package, but you also must use the "header = TRUE" argument when using
+# read.table.
+write.table(tidyData, file = "tidyData.txt", row.names = FALSE, quote = FALSE)
 
 # can be read back in using the load function of the r base package.
 save(tidyData, file = "tidyData.rda")
